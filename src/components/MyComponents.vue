@@ -1,14 +1,10 @@
 <template>
     <div class="root">
-        {{text}}
-        <input type="text" @input="checkinput" >
-        <input type="text">
-        {{ mail }}
-        <div>asdasdads</div>
-        <button
+        <input type="text" @input="findUser" :value="inputvalue" >
+        <div 
         v-for="user in users"
         :key="user"
-        >{{user}}</button>
+        >{{user}}</div>
     </div>
 </template>
 
@@ -17,18 +13,38 @@ export default {
     name: 'MyComponent',
     data() {
         return{
-            text: 'hello world',
-            password: '123',
-            mail: "default",
-            pages: 12,
-            users: ["firstuser","secoduser"]
+            users: ["Масьянов Евгений","Егор Соколов","Женя Золотаревич","Даня Милохин"],
+            input1: "1",
+            users2: ["Масьянов Евгений","Егор Соколов","Женя Золотаревич","Даня Милохин"],
+            inputvalue: ""
         }
     },
     
     methods: {
-        checkinput(event) {
-            this.mail = event.target.value
+        findUser(event) {
+            var userToFind = event.target.value
+            this.inputvalue = userToFind
+            if (userToFind == ""){
+                this.users = []
+                this.users2.forEach( (item) => {
+                this.users.push(item)
+          })
+            }
+            var sortMassive = []
+            this.users.forEach( function(data) {
+                if (data.indexOf(userToFind) != -1) {
+                    sortMassive.push(data)
+            }
+          });
+          this.users = []
+          sortMassive.forEach( (item) => {
+              this.users.push(item)
+          })
+
         }
     }
+
+    
+    
 }
 </script>
