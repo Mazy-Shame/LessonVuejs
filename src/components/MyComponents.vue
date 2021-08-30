@@ -1,11 +1,25 @@
 <template>
     <div class="root">
-        <input type="text" @input="findUser" :value="inputvalue" >
-        <div 
-        v-for="user in users"
-        :key="user"
-        >{{user}}</div>
+       <img v-if="showImg" src="../assets/logo.png" :style="imgStyles">
+       <div v-else>hello shawerma kot</div>
     </div>
+    <div>
+        <button class="shadow" @click="activateShadow">Тень</button>
+    </div>
+    <button @click="switchImg" :class=" btnClassactive? 'btnactive': '' "> {{ btnClassactive? switchbtntext2 : switchbtntext1}} </button>
+    <label>
+        Ширина: {{imgSizes.currentWidth}}
+        <input type="range" :value="imgSizes.currentWidth" :max="imgSizes.maxWidth" @input="imgSizes.currentWidth = $event.target.value" min="0">
+    </label>
+    <label>
+        Высота: {{imgSizes.currentHeight}}
+        <input type="range" :value="imgSizes.currentHeight" :max="imgSizes.maxHeight" @input="imgSizes.currentHeight = $event.target.value" min="0">
+    </label>
+    <label>
+        Угол: {{imgSizes.imgDegreecurrent}}
+        <input type="range" :value="imgSizes.imgDegreecurrent" :max="imgSizes.imgDegreemax" @input="imgSizes.imgDegreecurrent = $event.target.value" min="0">
+    </label>
+    
 </template>
 
 <script>
@@ -13,34 +27,58 @@ export default {
     name: 'MyComponent',
     data() {
         return{
-            users: ["Масьянов Евгений","Егор Соколов","Женя Золотаревич","Даня Милохин"],
-            input1: "1",
-            users2: ["Масьянов Евгений","Егор Соколов","Женя Золотаревич","Даня Милохин"],
-            inputvalue: ""
+            showImg: true,
+            imgSizes: {
+                maxWidth: 680,
+                maxHeight: 480,
+                currentWidth: 680,
+                currentHeight: 480,
+                imgDegreemax: 360,
+                imgDegreecurrent: 0,
+                shawowpx: 0
+            },
+            btnClassactive: false,
+            switchbtntext1: "нажмите чтобы изменить",
+            switchbtntext2: "изменилося"
+
         }
     },
     
     methods: {
-        findUser(event) {
-            var userToFind = event.target.value
-            this.inputvalue = userToFind
-            if (userToFind == ""){
-                this.users = []
-                this.users2.forEach( (item) => {
-                this.users.push(item)
-          })
+        switchImg() {
+            if (this.showImg == true){
+                this.showImg = false
             }
-            var sortMassive = []
-            this.users.forEach( function(data) {
-                if (data.indexOf(userToFind) != -1) {
-                    sortMassive.push(data)
+            else{
+                this.showImg = true
             }
-          });
-          this.users = []
-          sortMassive.forEach( (item) => {
-              this.users.push(item)
-          })
 
+            if (this.btnClassactive == true){
+                this.btnClassactive = false
+            }
+            else{
+                this.btnClassactive = true
+            }
+        },
+
+        activateShadow() {
+            if( this.imgSizes.shawowpx == 0 ){
+                this.imgSizes.shawowpx = 10
+            }
+            else{
+                this.imgSizes.shawowpx = 0
+            }
+        }
+    },
+
+    computed: {
+        imgStyles() {
+            return {
+                width: `${this.imgSizes.currentWidth}px`,
+                height: `${this.imgSizes.currentHeight}px`,
+                transform: `rotate(${this.imgSizes.imgDegreecurrent}deg)`,
+                boxShadow: `${this.imgSizes.shawowpx}px ${this.imgSizes.shawowpx}px ${this.imgSizes.shawowpx}px ${this.imgSizes.shawowpx}px #000`
+            }
         }
     }
 
@@ -48,3 +86,14 @@ export default {
     
 }
 </script>
+
+<style scoped>
+   button {
+       margin-right: 10px;
+   }
+   
+   .btnactive {
+       background-color: burlywood;
+   }
+
+</style>
